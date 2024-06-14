@@ -17,6 +17,8 @@ public class UserServiceImpl implements UserService {
 	
    @Autowired
    UserMapper userMapper;
+   /* 매퍼 파일에서(UserMapper.xml) namespace를 해당 클래스로 지정하였기에(구현하고있기에) 
+   userMapper로 호출할 경우 UserMapper.xml로 매핑된다. */ 
 	
    @Override
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

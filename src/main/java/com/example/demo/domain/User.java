@@ -49,6 +49,7 @@ public class User implements UserDetails {
 	public void setAccountNonExpired(boolean isAccountNonExpired) {
 		this.isAccountNonExpired = isAccountNonExpired;
 	}
+	// 메서드명이 setIsAccountNonExpired가 아니라 setAccountNonExpired인 이유는 JavaBeans의 명명 규칙과 일관성을 유지하기 위함
 
 	public void setAccountNonLocked(boolean isAccountNonLocked) {
 		this.isAccountNonLocked = isAccountNonLocked;

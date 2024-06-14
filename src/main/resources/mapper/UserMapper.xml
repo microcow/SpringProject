@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.lcomputerstudy.example.mapper.UserMapper">
+<mapper namespace="com.example.demo.mapper.UserMapper">
+<!-- namespace를 지정하여 해당 매퍼 파일이 어떤 인터페이스 또는 클래스의 매퍼인지 명시합니다. 이는 MyBatis에서 쿼리를 실행할 때 필요한 정보이며, Java 코드에서 해당 매퍼를 호출할 때 필요합니다. -->
+<!-- 즉, 이 매핑은 UserMapper 인터페이스와 연결합니다. 또한, UserMapper.xml 파일은 데이터베이스와 Java 객체 간의 매핑 정보를 포함하고 있습니다. -->
+
  <!-- 권한 읽기 -->
     <select id="readAuthorities" parameterType="String" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
        SELECT         u_auth
-       FROM         lc_auth
+       FROM         !!!!
        WHERE          1=1
        AND            u_id = #{username}
     </select>
@@ -18,14 +21,15 @@
 			                 u_isAccountNonLocked    	    as isAccountNonLocked,
 			                 u_isCredentialNonExpired    as isCredentialsNonExpired,
 			                 u_isEnabled          				    as isEnabled
-      FROM         lc_user
+			                 <!-- 앞에 u_를 빼는 이유는 java의 해당 인스턴스 명과 일치시켜주어야함 -->
+      FROM         sb_user
       WHERE         1=1
       AND            u_id   =   #{username}
    </select>
    
    <!-- 회원 등록 -->
    <insert id="createUser" parameterType="User">
-      INSERT INTO lc_user (
+      INSERT INTO sb_user (
          u_id,
          u_password,
          u_name,
@@ -46,7 +50,7 @@
    
     <!-- 유저 권한 추가 -->
     <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
-       INSERT INTO lc_auth (
+       INSERT INTO !!!!! (
           u_id,
           u_auth
        ) VALUES
