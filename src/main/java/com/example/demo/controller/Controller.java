@@ -47,8 +47,8 @@ public class Controller {
 		// Spring에서 알아서 입력받은 내용을 User클래스로 인식하여 값을 세팅(setter를 호출해서)함.
 		/* 만약, <input type="text" name="username" placeholder="id 입력"> 라는 input타입 정보를 입력받고 해당 매서드가 받았을 경우
 		입력받은 내용을 자동으로 user클래스의 SetUsername메서드를 Spring에서 호출하고 값을 세팅함*/
-		/* 스프링이 아닌 서블릿이었을 경우, request.getParameter("username")로 일일히 정보를 받은 후 User 클래스 인스턴스를 생성해서 받은 정보를 저장해주어야하지만,
-		   여기선 알아서 User 클래스로 파라미터를 받으면 따로 request.getParameter하지 않아도 받은 정보가 저장된 User클래스의 user 인스턴스가 생성된다 */
+		/* @ModelAttribute: 스프링이 아닌 서블릿이었을 경우, request.getParameter("username")로 일일히 정보를 받은 후 User 클래스 인스턴스를 생성해서 받은 정보를 저장해주어야하지만,
+		   여기선 알아서 User 클래스로 파라미터를 받으면 따로 request.getParameter하지 않아도 받은 정보가 User클래스의 user 인스턴스에 바인딩된다. */
 		
 		//비밀번호 암호화
 	      String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
