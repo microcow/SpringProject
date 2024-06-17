@@ -6,10 +6,14 @@
 
  <!-- 권한 읽기 -->
     <select id="readAuthorities" parameterType="String" resultType="org.springframework.security.core.authority.SimpleGrantedAuthority">
+       							<!-- parameterType : 전달받는 객체를 타입의 매개변수로 받음 -->
+       							<!-- resultType : 쿼리 실행 결과 타입을 MyBatis가 자동으로 매핑 -->
        SELECT         u_auth
-       FROM         !!!!
+       FROM         sb_auth
        WHERE          1=1
-       AND            u_id = #{username}
+       AND            u_id = #{username} <!-- 전달받은 객체의 username 인스턴스 변수 호출 -->
+       						<!-- 서블릿의 경우 ${user.username} 이런식으로 적은 후 getUsername 메서드를 호출하는 방식이지만,
+       						 mybatis는 전달받은 파라미터를 참조하는 방식임 -->
     </select>
 
    <!-- 회원 불러오기 -->
@@ -49,16 +53,22 @@
    </insert>   
    
     <!-- 유저 권한 추가 -->
-    <insert id="createAuthority" parameterType="org.springframework.security.core.GrantedAuthority">
-       INSERT INTO !!!!! (
+    <insert id="createAuthority" parameterType="User">
+    								<!-- parameterType : 전달받는 객체를 타입이 "User" 클래스 -->
+       INSERT INTO sb_auth (
           u_id,
           u_auth
        ) VALUES
-         <foreach item="authority" index="index" collection="authorities" separator=",">
+         <foreach item="authority" index="index" collection="authorities" separator=","> <!-- foreach문의 index는 첫번째 요소부터 0번이라고 값을 지정한다 -->
             (#{username}, #{authority.role})
+            <!-- values 값이 foreach문이다. 해석하자면 전달받은 객체 타입인 User클래스의 컬렉션타입인 authorities라는 인스턴스 변수에서
+             요소(? extends GrantedAuthority 타입)를 하나씩 가져와 authority에 저장하고, 그 요소(객체)의 username과 authority 값을 불러온 뒤 sb_auth테이블에 저장(insert)시킨 후 반복 -->
+             <!-- #{authority.role} : MyBatis에서 해당 객체의 getAuthority() 메서드를 호출하여 권한 문자열을 가져오는 것을 의미 -->
          </foreach>
-         ON DUPLICATE KEY
+         ON DUPLICATE KEY <!-- INSERT할 때 키 값(u_id와 u_auth의 복합 키 값)이 '중복일 경우에만' update문 실행  -->
+         <!-- 즉, 동일인물이 이미 보유 중인 권한을 또 부여(insert)받을때, 중복으로 인식되며 ON DUPLICATE KEY문이 발동되어 update문이 실행된다 -->
          UPDATE
             u_id = #{username}
+            <!-- 중복이 발생한 유저의 이름을 username으로 변경 (어차피 변경 전 후 username은 동일하기 때문에 새로고침하는 느낌) -->
     </insert>
 </mapper>

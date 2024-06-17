@@ -12,8 +12,16 @@
      <h1>Home Page</h1>
         <hr>
         <div>
-          <a href="/login">로그인</a>
-          <a href="/beforeSignUp">회원가입</a>
+           <sec:authorize access="isAnonymous()">
+              <a href="/login">로그인</a>
+              <a href="/beforeSignUp">회원가입</a>
+           </sec:authorize>   
+            <sec:authorize access="isAuthenticated()">
+               <a href="/logout">로그아웃</a>
+               <sec:authentication property="principal" var="principal"/>
+               <h2>${principal }</h2>
+            </sec:authorize>
+            
         </div>
         <div>
          <sec:authorize access="isAuthenticated()">        
