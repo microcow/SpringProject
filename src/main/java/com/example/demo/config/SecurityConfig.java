@@ -40,17 +40,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //      인증과 권한
       http
       .authorizeRequests()
-            .antMatchers("/user/**").authenticated()
-            .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
-            .anyRequest().permitAll()
-            .and()
+         .antMatchers("/user/**").authenticated() // "/user/**" 패턴의 URL은 인증된 사용자만 접근 가능
+         .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')") // "/admin/**" 패턴의 URL은 ROLE_ADMIN 권한을 가진 사용자만 접근 가능
+         .anyRequest().permitAll() // 그 외 모든 요청은 모든 사용자에게 허용
+         .and()
 //      폼 로그인 설정
       .formLogin()
-            .loginPage("/login")
-            .loginProcessingUrl("/loginPro")
-            .defaultSuccessUrl("/", true)
-            .permitAll()
-            .and()
+         .loginPage("/login") // 로그인 페이지 URL을 "/login"으로 설정합니다.
+         .loginProcessingUrl("/loginPro") // 로그인 처리 URL을 "/loginPro"로 설정합니다.
+         .defaultSuccessUrl("/", true) // 로그인 성공 후에는 항상 "/"로 리다이렉트합니다.
+         .permitAll() // 로그인 페이지는 모든 사용자에게 접근 허용
+         .and()
 //      로그아웃 설정
       .logout()
          .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
@@ -74,7 +74,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
          .invalidSessionUrl("/login")
          .and()
 //      csrf   
-      .csrf().disable();       
+      .csrf().disable();  // .csrf()는 기본적인 CSRF 보호를 활성화한다. // .disable()은 CSRF 보호를 비활성화한다.
    }
    @Bean
    public PersistentTokenRepository persistentTokenRepository() {

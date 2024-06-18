@@ -70,5 +70,6 @@
          UPDATE
             u_id = #{username}
             <!-- 중복이 발생한 유저의 이름을 username으로 변경 (어차피 변경 전 후 username은 동일하기 때문에 새로고침하는 느낌) -->
+         
     </insert>
 </mapper>

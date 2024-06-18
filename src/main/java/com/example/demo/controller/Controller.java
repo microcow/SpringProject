@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -22,25 +24,28 @@ public class Controller {
        		return "/index";
    		} */
 	
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	@Autowired BoardService boardservice;
 	@Autowired UserService userservice;
 	// Authwired : 의존성 주입. UserService 타입의 빈(bean)을 주입받겠다는 의미
 	// 해당 인터페이스를 구현한 클래스의 인스턴스를 찾아서 주입합니다. 예를 들어, UserServiceImpl이 UserService를 구현한 경우, UserServiceImpl의 인스턴스를 주입할 수 있습니다.	
-	
-	
 	
 	@RequestMapping("/")
 	public String home(Model model) {
 		
 		List<Board> list = boardservice.selectBoardList();
 		model.addAttribute("list", list);
+		logger.debug("debug");
+		logger.info("info");
+		logger.error("error");
 		return "/index";
 	}
 	@RequestMapping("/beforeSignUp") 
 	public String beforeSignUp() {
 		return "/signup";
 	}
-	
+
 	@RequestMapping("/signup")
 	public String signup(@ModelAttribute User user) {
 		// request.getParameter로 받지 않음
@@ -75,7 +80,7 @@ public class Controller {
 	    return "/login";
 	}
 	
-	@RequestMapping(value="/login")
+	@RequestMapping(value="/login") // value는 생략가능하다
 	public String beforeLogin(Model model) {
 		return "/login";
 	}

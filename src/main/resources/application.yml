@@ -1,4 +1,4 @@
- #들여쓰기 제대로 하지 않으면 오류발생
+ #yml은 들여쓰기 제대로 하지 않으면 오류발생
  
  spring:
   profiles:
@@ -61,3 +61,6 @@ server:
 mybatis:
   type-aliases-package: com.example.demo.domain
   mapper-locations: mapper/**/*.xml
+  
+logging:
+  config: classpath:logback-spring.xml
