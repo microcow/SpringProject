@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<configuration scan="true" scanPeriod="30 seconds">
+<configuration scan="true" scanPeriod="30 seconds"> <!-- Logback 설정 파일을 주기적으로 스캔하여 변경 사항을 반영합니다. 여기서는 30초마다 스캔합니다. -->
    
    <!-- console 로그 설정 -->
-   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender"> <!-- 콘솔로 로그를 출력하기 위한 ConsoleAppender를 정의합니다. 이름은 STDOUT입니다. -->
       <encoder>
-         <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) --- [%thread] %logger{35} : %msg %n</pattern>
+         <pattern>%d{HH:mm:ss.SSS} %highlight([%-5level]) --- [%thread] %logger{35} : %msg %n</pattern> <!-- 로그 메시지의 출력 패턴을 정의합니다. %d{HH:mm:ss.SSS}는 로그 발생 시각, %highlight([%-5level])는 로그 레벨을 강조하여 표시, [%thread]는 쓰레드 이름, %logger{35}는 로그를 남긴 로거 이름, %msg는 로그 메시지 -->
       </encoder>
-   </appender>
+   </appender> 
    
    <!-- 로그 파일로 남기는 설정 -->
-   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-         <fileNamePattern>C:\sts-logs\logback-%d{yyyy-MM-dd}.log.zip</fileNamePattern>
-         <maxHistory>7</maxHistory>
+   <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender"> <!-- 로그를 파일로 출력하기 위한 RollingFileAppender를 정의합니다. 이름은 FILE입니다. -->
+      <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy"> <!-- 로그 파일을 시간 단위로 롤링하는 정책을 정의합니다. -->
+         <fileNamePattern>C:\sts-logs\logback-%d{yyyy-MM-dd}.log.zip</fileNamePattern> <!-- 로그 파일의 이름 패턴을 정의합니다. 매일 새로운 파일이 생성되며, 파일은 ZIP 형식으로 압축됩니다. -->
+         <maxHistory>7</maxHistory> 
       </rollingPolicy>
       <encoder>
          <pattern>%d{HH:mm:ss.SSS} %-5level --- [%thread] %logger{35} : %msg %n</pattern>

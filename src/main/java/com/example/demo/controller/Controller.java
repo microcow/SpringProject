@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +29,11 @@ public class Controller {
 	
 	@Autowired BoardService boardservice;
 	@Autowired UserService userservice;
-	// Authwired : 의존성 주입. UserService 타입의 빈(bean)을 주입받겠다는 의미
+	@Autowired PasswordEncoder passwordEncoder;
+	/* Authwired : 의존성 주입. UserService 타입의 빈(bean)을 주입받겠다는 의미
+	   즉, 빈으로 등록된 것만 주입받을 수 있음.
+	*/
+	
 	// 해당 인터페이스를 구현한 클래스의 인스턴스를 찾아서 주입합니다. 예를 들어, UserServiceImpl이 UserService를 구현한 경우, UserServiceImpl의 인스턴스를 주입할 수 있습니다.	
 	
 	@RequestMapping("/")
@@ -36,6 +41,7 @@ public class Controller {
 		
 		List<Board> list = boardservice.selectBoardList();
 		model.addAttribute("list", list);
+		logger.trace("트레이스 로그입니다.");
 		logger.debug("debug");
 		logger.info("info");
 		logger.error("error");
@@ -56,7 +62,7 @@ public class Controller {
 		   여기선 알아서 User 클래스로 파라미터를 받으면 따로 request.getParameter하지 않아도 받은 정보가 User클래스의 user 인스턴스에 바인딩된다. */
 		
 		//비밀번호 암호화
-	      String encodedPassword = new BCryptPasswordEncoder().encode(user.getPassword());
+	      String encodedPassword = passwordEncoder.encode(user.getPassword());
 	      // BCryptPasswordEncoder클래스의 encode메서드는 주어진 정보를 BCrypt 알고리즘으로 암호화함
 	      
 	      //유저 데이터 세팅
