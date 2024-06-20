@@ -37,11 +37,11 @@ public class Controller {
 	// 해당 인터페이스를 구현한 클래스의 인스턴스를 찾아서 주입합니다. 예를 들어, UserServiceImpl이 UserService를 구현한 경우, UserServiceImpl의 인스턴스를 주입할 수 있습니다.	
 	
 	@RequestMapping("/")
-	public String home(Model model) {
+	public String home(Model model) { // Model은 서블릿의 request와 같은 동작을한다.
 		
 		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list);
-		logger.trace("트레이스 로그입니다.");
+		model.addAttribute("list", list); // 서블릿의 request setAttribute와 같은 동작
+		logger.trace("trace");
 		logger.debug("debug");
 		logger.info("info");
 		logger.error("error");
