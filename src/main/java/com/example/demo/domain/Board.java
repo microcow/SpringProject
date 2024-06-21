@@ -7,13 +7,6 @@ public class Board {
 	private String bWriter;
 	private String bDateTime;
 	
-	
-	public int getbId() {
-		return bId;
-	}
-	public void setbId(int bId) {
-		this.bId = bId;
-	}
 	public String getbTitle() {
 		return bTitle;
 	}
@@ -31,6 +24,12 @@ public class Board {
 	}
 	public void setbWriter(String bWriter) {
 		this.bWriter = bWriter;
+	}
+	public int getbId() {
+		return bId;
+	}
+	public void setbId(int bId) {
+		this.bId = bId;
 	}
 	public String getbDateTime() {
 		return bDateTime;

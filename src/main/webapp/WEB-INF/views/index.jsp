@@ -41,7 +41,7 @@
                <a href="/user/info">내 정보</a>
                <a href="/admin">관리자</a>
                <a href="/createboard">게시글 작성</a>
-               <a href="/boardlist">게시글 목록</a>
+               <a href="/boardlist">게시글 목록</a> <!-- 동일한 Jsp명이 있더라도 Java 컨트롤러 메서드가 호출된다 -->
             </sec:authorize>
         </div>   
 </body>

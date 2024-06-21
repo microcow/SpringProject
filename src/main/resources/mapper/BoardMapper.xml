@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.BoardMapper">
-	<select id="selectBoardList" resultType="Board">
+	   
+	<insert id="insertBoard" parameterType="Board">
+   	     INSERT INTO sb_board (b_title, b_content, b_writer)
+   	      VALUES (#{bTitle}, #{bContent}, #{bWriter})
+    </insert>
+    
+    <select id="selectBoardList" resultType="Board">
 	      SELECT         b_id as bId,
 				                 b_title as bTitle,
 				                 b_content as bContent,
 				                 b_writer as bWriter
 	      FROM            sb_board
+	<!-- resultType="Board"는 SQL 쿼리의 결과를 Board 객체로 매핑하겠다는 의미입니다. 
+	따라서, 이 쿼리는 여러 개의 Board 객체를 반환할 수 있으며, 이를 ★★리스트로 묶어서 반환하는 것이 일반적입니다. 
+	즉, return값이 1개더라도 List<Board> 타입으로 반환됨. -->
 	   </select>
+    
 </mapper>
 

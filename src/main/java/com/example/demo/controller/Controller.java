@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Board;
 import com.example.demo.domain.User;
@@ -39,8 +41,6 @@ public class Controller {
 	@RequestMapping("/")
 	public String home(Model model) { // Model은 서블릿의 request와 같은 동작을한다.
 		
-		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list); // 서블릿의 request setAttribute와 같은 동작
 		logger.trace("trace");
 		logger.debug("debug");
 		logger.info("info");
@@ -107,4 +107,51 @@ public class Controller {
 	public String denied(Model model) {
 		return "/denied";
 	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/createboard")
+	public String createBoard(Model model) {
+		
+		return "/createboard";
+	}
+	
+	
+	/*
+	// jsp에서 입력받은 값을 불러와 저장하는법 1 (직접 바인딩하는 법) 
+	 @Secured({"ROLE_USER"})
+	    @RequestMapping(value = "/insertboard", method = RequestMethod.POST)
+	    public String insertBoard(
+	            @RequestParam("bTitle") String title,
+	            @RequestParam("bContent") String content,
+	            @RequestParam("bWriter") String writer) {
+		
+		 Board board = new Board();
+	        board.setbTitle(title);
+	        board.setbContent(content);
+	        board.setbWriter(writer);
+		 
+		return "/createboard";		
+	}
+	*/
+
+	// jsp에서 입력받은 값을 불러와 저장하는법 2 (Spring이 자동으로 저장하는 법) 
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/insertboard")
+	public String insertBoard(Board board) {
+		
+		boardservice.insertBoard(board);
+		
+		return "/index";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/boardlist")
+	public String boardList(Model model) {
+		List<Board> list = boardservice.selectBoardList();
+		model.addAttribute("list", list); // 서블릿의 request setAttribute와 같은 동작
+		
+		return "/boardlist";
+	}
+	
+	
 }
