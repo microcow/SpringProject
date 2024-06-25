@@ -19,4 +19,11 @@ public interface BoardMapper {
 	public void insertBoard(Board board); // XML 기반으로 매핑을 통해 db에 값을 저장하는 법 (XML로 전달됨)
 	
 	public List<Board> selectBoardList();
+	
+	public Board selectBoard(int bId);
+	
+	public void updateBoard(Board board);
+	
+	public void deleteBoard(int bid);
+	
 }

@@ -148,10 +148,66 @@ public class Controller {
 	@RequestMapping(value="/boardlist")
 	public String boardList(Model model) {
 		List<Board> list = boardservice.selectBoardList();
-		model.addAttribute("list", list); // 서블릿의 request setAttribute와 같은 동작
+		model.addAttribute("list", list); 
+		// Model 인터페이스의 addAttribute메서드가 서블릿의 request setAttribute와 같은 동작 (jsp로 값을 전달하기 위해 사용)
 		
 		return "/boardlist";
 	}
 	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/boarddetail")
+	public String boarddetail(@RequestParam("bId") int bId, Model model) {
+		// get방식으로 bId값을 받고 있음
+		Board board = boardservice.selectBoard(bId);
+		model.addAttribute("board", board);
+		
+		return "/boarddetail";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/correctionboard")
+	public String correctionboard(@RequestParam("bId") int bId, @RequestParam("username") String username, Model model) {
+		// 글 수정하려는 작성자가 맞는지 확인필요
+		Board board = boardservice.selectBoard(bId);
+		
+		if (board.getbWriter().equals(username)) {
+			// 접속된 유저와 수정하려는 게시글 작성자 이름이 일치하는지 확인
+			model.addAttribute("board", board);
+			return "/correctionboard";
+		}
+		else return "/wrongapproach";
+		
+		
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/updateboard")
+	public String updateboard(@RequestParam("bId") int bId,
+							 @RequestParam("bTitle") String bTitle,
+							 @RequestParam("bContent") String bContent,
+							 Model model) {
+		Board board = boardservice.selectBoard(bId);
+		board.setbTitle(bTitle);
+		board.setbContent(bContent);
+		boardservice.updateBoard(board);
+		model.addAttribute("board", board);	
+		
+		return "/boarddetail";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/deleteboard")
+	public String deleteboard(@RequestParam("username") String username,
+				   			  @RequestParam("bId") int bId,
+							  Model model) {
+		
+		Board board = boardservice.selectBoard(bId);		
+		if (board.getbWriter().equals(username)) { // 현재 접속자와 글 작성자 명이 일치하는지 확인
+			boardservice.deleteBoard(bId);
+			return "/deletecomplete";
+		}
+		else return "/wrongapproach";
+		
+	}
 	
 }

@@ -12,10 +12,11 @@
       <table>
       	<c:forEach var="list" items="${list }">
 	      	<tr>
-	      		<td>${list.bId }</td>
-	      		<td>${list.bTitle }</td>
-	      		<td>${list.bContent }</td>
-	      		<td>${list.bWriter }</td>
+	   		   	<td>
+	 		     	<a href="/boarddetail?bId=${list.bId}"> <!-- get 방식으로 값 전송 -->
+	   		   			${list.bTitle }
+	 		     	</a>
+	      		</td>
 	      	</tr>
       	</c:forEach>
       </table>

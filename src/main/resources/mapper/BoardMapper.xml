@@ -14,9 +14,30 @@
 				                 b_writer as bWriter
 	      FROM            sb_board
 	<!-- resultType="Board"는 SQL 쿼리의 결과를 Board 객체로 매핑하겠다는 의미입니다. 
-	따라서, 이 쿼리는 여러 개의 Board 객체를 반환할 수 있으며, 이를 ★★리스트로 묶어서 반환하는 것이 일반적입니다. 
+	단, 이 쿼리는 여러 행을 return하고 있으므로 List<Board> 타입으로 return받아야 합니다.
 	즉, return값이 1개더라도 List<Board> 타입으로 반환됨. -->
 	   </select>
+	   
+	    <select id="selectBoard" resultType="Board">
+	      SELECT         b_id as bId,
+				                 b_title as bTitle,
+				                 b_content as bContent,
+				                 b_writer as bWriter
+	      FROM            sb_board
+	      WHERE			 b_id = #{bId}
+	   </select>
+	   
+	   <update id="updateBoard" parameterType="Board">
+  		  UPDATE sb_board
+  		  SET b_title = #{bTitle}, b_content = #{bContent}
+   	      WHERE b_id = #{bId}
+	   </update>
+	   
+	   <delete id="deleteBoard" parameterType="int">
+	   	  DELETE FROM sb_board
+	   	  WHERE b_id = #{bId}
+	   </delete>
+	 
     
 </mapper>
 

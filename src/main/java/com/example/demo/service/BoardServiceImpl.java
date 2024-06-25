@@ -12,6 +12,11 @@ import com.example.demo.mapper.BoardMapper;
 // ("BoardServiceImpl")는 생략 가능
 public class BoardServiceImpl implements BoardService {
 
+	@Override
+	public Board selectBoard(int bId) {
+		return boardmapper.selectBoard(bId);
+	}
+	
 	@Autowired BoardMapper boardmapper;
 	
 	@Override
@@ -23,5 +28,17 @@ public class BoardServiceImpl implements BoardService {
 	public void insertBoard(Board board) {
 		boardmapper.insertBoard(board);
 	}
+	
+	@Override
+	public void updateBoard(Board board) {
+		boardmapper.updateBoard(board);
+	}
+	
+	@Override
+	public void deleteBoard(int bid) {
+		boardmapper.deleteBoard(bid);
+	}
+	
+	
 
 }
