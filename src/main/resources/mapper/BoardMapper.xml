@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.demo.mapper.BoardMapper">
-	   
-	<insert id="insertBoard" parameterType="Board">
+
+	  <!-- ★ xml에서는 태그를 소문자로 작성 -->
+	  
+	<insert id="insertBoard" parameterType="Board" useGeneratedKeys="true" keyProperty="bId">
    	     INSERT INTO sb_board (b_title, b_content, b_writer)
-   	      VALUES (#{bTitle}, #{bContent}, #{bWriter})
+   	      VALUES (#{bTitle}, #{bContent}, #{bWriter}) <!-- 변수의 getter를 호출함 -->
     </insert>
     
     <select id="selectBoardList" resultType="Board">
@@ -37,7 +39,12 @@
 	   	  DELETE FROM sb_board
 	   	  WHERE b_id = #{bId}
 	   </delete>
-	 
+	   	 
+	   <update id="insertP_board" parameterType="Board">
+	   		UPDATE sb_board
+	   		SET p_board = #{p_board}
+	   		WHERE b_id = #{bId}
+	   </update>
     
 </mapper>
 

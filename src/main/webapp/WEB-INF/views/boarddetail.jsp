@@ -25,7 +25,8 @@
         </tr>
     </table>
     <a href="/correctionboard?bId=${board.bId}&username=${username }">게시글 수정</a>
-    <a href="/deleteboard?bId=${board.bId}&username=${username }">게시글 삭제</a>
+    <p><a href="/deleteboard?bId=${board.bId}&username=${username }">게시글 삭제</a></p>
+    <a href="/reply?bId=${board.bId}&username=${username }">답글 달기</a>
     </sec:authorize>
 	</div>
 </body>

@@ -20,5 +20,6 @@
 	      	</tr>
       	</c:forEach>
       </table>
+      <h2><a href="/"> 돌아가기 </a></h2>
 </body>
 </html>

@@ -139,7 +139,23 @@ public class Controller {
 	@RequestMapping(value="/insertboard")
 	public String insertBoard(Board board) {
 		
+		/*
+		int insertBoardID = boardservice.createBoard(board);
+		// 방금 db에 저장된 데이터의 자동생성키 가져오는 법 1(트랜잭션 어노테이션 사용)
+		board.setbId(insertBoardID); // bID값 셋팅
+		*/
+		
 		boardservice.insertBoard(board);
+		// 방금 db에 저장된 데이터의 자동생성키 가져오는 법 2(프로퍼티 키 키워드 사용, bID값 자동 세팅)
+		
+	
+		/// 여기에 원글일 경우에만 setP_board 메서드 실행되도록 수정필요
+		board.setP_board(board.getbId()); // 원글일 경우 자신의 bID 값을 p_board 값으로 셋팅
+		
+		/// 답글일 경우 depth값, grpord값 설정
+		
+		boardservice.insertP_board(board);
+		
 		
 		return "/index";
 	}
