@@ -110,7 +110,13 @@ public class Controller {
 	
 	@Secured({"ROLE_USER"})
 	@RequestMapping(value="/createboard")
-	public String createBoard(Model model) {
+	public String createBoard(@RequestParam(value = "bId", required = false) Integer bId, Model model) {
+								//required = false : bId의 값이 있을때만 파라미터로 받음
+		
+		if (bId != null) { //답글일 경우 원글 전달(bId가 Integer타입이므로 != 0이 아닌 != null)
+			Board momBoard = boardservice.selectBoard((int)bId);
+			model.addAttribute("momBoard" ,momBoard); 
+		}
 		
 		return "/createboard";
 	}
@@ -140,21 +146,26 @@ public class Controller {
 	public String insertBoard(Board board) {
 		
 		/*
-		int insertBoardID = boardservice.createBoard(board);
-		// 방금 db에 저장된 데이터의 자동생성키 가져오는 법 1(트랜잭션 어노테이션 사용)
+		int insertBoardID = boardservice.createBoard(board); // 방금 db에 저장된 데이터의 자동생성키 가져오는 법 1(트랜잭션 어노테이션 사용)
 		board.setbId(insertBoardID); // bID값 셋팅
 		*/
+		boardservice.insertBoard(board); // 방금 db에 저장된 데이터의 자동생성키 가져오는 법 2(프로퍼티 키 키워드 사용, bID값 자동 세팅)
+
 		
-		boardservice.insertBoard(board);
-		// 방금 db에 저장된 데이터의 자동생성키 가져오는 법 2(프로퍼티 키 키워드 사용, bID값 자동 세팅)
+		if (board.getP_board() != 0) {// 답글일 경우 부모 bId 값을 p_board값으로 저장
+		board.setP_board(board.getP_board()); // 답글일 경우 부모 p_board 값을 p_board값으로 저장
+		board.setDepth(board.getDepth()+1); // 답글일 경우 부모 depth값 +1
+		boardservice.updateGrpord(board); // 같은 p_board를 가진 게시글 부모 grpord값보다 큰 grpord를 가진 게시글의 grpord값 +1씩 더하기
+		board.setGrpord(board.getGrpord()+1); // +1씩 더하면 부모 grpord값 +1의 값은 비게되니까 본인이 부모 grpord값 +1로 설정
+		board.setbTitle("ㄴ" + board.getbTitle()); // 답글일 경우 제목 앞에 ㄴ 추가
+		}
+		else {// 원글일 경우 자신의 bId값을 p_board값으로 저장, depth 1로 설정, grpord 0으로 설정
+			board.setP_board(board.getbId());
+			board.setDepth(1);
+			board.setGrpord(0);
+		}
 		
-	
-		/// 여기에 원글일 경우에만 setP_board 메서드 실행되도록 수정필요
-		board.setP_board(board.getbId()); // 원글일 경우 자신의 bID 값을 p_board 값으로 셋팅
-		
-		/// 답글일 경우 depth값, grpord값 설정
-		
-		boardservice.insertP_board(board);
+		boardservice.updateData(board);
 		
 		
 		return "/index";

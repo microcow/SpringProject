@@ -54,8 +54,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	public void insertP_board(Board board) {
-		boardmapper.insertP_board(board);
+	public void updateData(Board board) {
+		boardmapper.updateData(board);
+	}
+	
+	@Override
+	public void updateGrpord(Board board) {
+		boardmapper.updateGrpord(board);
 	}
 
 }

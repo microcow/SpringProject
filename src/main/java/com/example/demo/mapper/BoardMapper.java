@@ -32,5 +32,7 @@ public interface BoardMapper {
 	
 	public void deleteBoard(int bid);
 	
-	public void insertP_board(Board board);
+	public void updateData(Board board);
+	
+	public void updateGrpord(Board board);
 }
