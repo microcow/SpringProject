@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Reply;
 
 @Mapper
 public interface BoardMapper {
@@ -35,4 +36,12 @@ public interface BoardMapper {
 	public void updateData(Board board);
 	
 	public void updateGrpord(Board board);
+	
+	public List<Reply> selectReplyList(int bid);
+	
+	public void insertReply(Reply reply);
+	
+	public void updateReply(Reply reply);
+	
+	public void updateReplyGrpord(Reply reply);
 }

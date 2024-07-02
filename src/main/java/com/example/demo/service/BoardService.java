@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import java.util.List;
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Reply;
 
 
 public interface BoardService {
@@ -24,4 +25,11 @@ public interface BoardService {
 	
 	public void updateGrpord(Board board); // 답글일 경우 원글보다 grpord의 값이 큰 게시글의 grpord값을 +1시켜주는 메서드
 	
+	public List<Reply> selectReplyList(int bid);
+	
+	public void insertReply(Reply reply);
+	
+	public void updateReply(Reply reply);
+	
+	public void updateReplyGrpord(Reply reply);
 }

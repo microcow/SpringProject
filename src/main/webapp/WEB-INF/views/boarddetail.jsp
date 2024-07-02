@@ -7,6 +7,11 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js">
+// jQuary 라이브러리 추가 코드
+// 추가하지 않을 경우 Ajax나 script 사용에 문제가 발생할 수 있음
+</script>
+
 </head>
 <body>
 	<div>
@@ -29,20 +34,16 @@
     <p><a href="/deleteboard?bId=${board.bId}&username=${username }">게시글 삭제</a></p>
     <p><a href="/createboard?bId=${board.bId}&username=${username }">답글 달기</a></p>
     
-  <!-- 아래부터 댓글 --> 
-	<p><button type="button" class="btnComment2">댓글달기</button></p>
-	<!-- input방식은 폼을 서버로 전송하고자 하기 때문에 아래 skript의 e.preventDefault();가 작동하지 않을 수 있음 따라서 button 사용 -->
-<table>
-	<tr style="display: none;">
-  	    <td colspan="4">
+  <!-- 아래부터 댓글 -->
+
+<h2>댓글 작성</h2>
+<table id="commentList">
+	<tr>
+ 		<td colspan="4">
        		<textarea id="commentTextarea1" rows="2" cols="80"></textarea> <!-- textarea의 id는 다른 textarea의 id와 동일할 경우 제대로 전달되지 않을 수 있음 -->
        		<button type="button" class="btnCommentProc">등록</button>
 		</td>
 	</tr>
-</table>
-
-<h2>댓글</h2>
-<table id="commentList">
 	<tr>
 	    <th>작성자</th>
 	    <th>댓글 내용</th>
@@ -50,13 +51,13 @@
 	</tr>
     <c:forEach items="${replyList}" var="reply" > <!-- "replyList"를 java에서 전달받고 reply에 foreach로 저장함 -->
     <tr> 
-         <td>${reply.writer}</td>
-         <td>${reply.content}</td>
-         <td>${reply.date}</td>
+         <td>${reply.r_writer}</td>
+         <td>${reply.r_content}</td>
+         <td>${reply.r_date}</td>
          <td>
 	         <form action="creat-reply.do" method="post">
-				<input type="hidden" name="b_idx" value="${board2.b_idx}">
-				<input type="hidden" name="r_idx" value="${reply.r_idx}">
+				<input type="hidden" name="b_id" value="${reply.b_id}">
+				<input type="hidden" name="r_id" value="${reply.r_id}">
 				<p><button type="button" class="btnComment">댓글달기</button></p>
 				<p><button type="button" class="btnChange">수정하기</button></p>
 				<p><button type="button" class="btnDelete">삭제하기</button></p>
@@ -67,22 +68,7 @@
 	<tr style="display: none;">
       	<td colspan="4">
    			<textarea id="commentTextarea2" rows="2" cols="80"></textarea>
-   			<button type="button" class="btnCommentProc" grpord = "${reply.grpord}" p_post="${reply.p_post}" rIdx="${reply.r_idx}">등록</button> 
-   			<!-- rIdx라는 속성을 직접 만든 후 r_idx값을 저장 -->
-   			<!-- 댓글달기를 눌었을 때와 등록버튼을 눌렀을 때 이동되는 script는 다르기때문에 등록하기를 눌렀을 때 reply.r_idx를 따로 저장하지 않으면 불러올 수 없음 -->
-      	</td>
-	</tr>
-	<tr style="display: none;">
-      	<td colspan="4">
-   			<textarea id="commentChange" rows="2" cols="80"></textarea>
-   			<button type="button" class="btnChangeProc" rIdx="${reply.r_idx}">수정</button> 
-   			<!-- rIdx라는 속성을 직접 만든 후 r_idx값을 저장 -->
-   			<!-- 댓글달기를 눌었을 때와 등록버튼을 눌렀을 때 이동되는 script는 다르기때문에 등록하기를 눌렀을 때 reply.r_idx를 따로 저장하지 않으면 불러올 수 없음 -->
-      	</td>
-	</tr>
-	<tr style="display: none;">
-      	<td colspan="4">
-   			<button type="button" class="btnDeleteProc" rIdx="${reply.r_idx}">삭제</button> 
+   			<button type="button" class="btnComment2" r_grpord = "${reply.r_grpord}" p_rp="${reply.p_rp}" r_depth="${reply.r_depth}">등록</button> 
    			<!-- rIdx라는 속성을 직접 만든 후 r_idx값을 저장 -->
    			<!-- 댓글달기를 눌었을 때와 등록버튼을 눌렀을 때 이동되는 script는 다르기때문에 등록하기를 눌렀을 때 reply.r_idx를 따로 저장하지 않으면 불러올 수 없음 -->
       	</td>
@@ -96,10 +82,72 @@
 	</div>
 	
 <script>
-$(document).on('click', '.btnComment2', function(e) {
-    e.preventDefault();
-    $(this).closest('table').find('tr').css('display', '');
+$(document).on('click', '.btnCommentProc', function () { /// 최초 댓글 '등록'버튼 누를 시 여기로 (원댓글)
+	/* let r_idx = $(this).parent().parent().prev().find('input[name="r_idx"]').val(); // input 요소 중에서 name 속성이 "r_idx"인 요소를 찾습니다.(r_idx를 직접 찾아가는 방법)
+	.val(): jQuery에서 제공하는 메서드로, 폼 요소 (예: <input>, <textarea>, <select> 등)의 현재 값을 가져오거나 설정할 때 사용됩니다.
+	값 가져오기: $('#commentTextarea').val()은 ID가 commentTextarea인 요소의 현재 값을 반환합니다.
+	값 설정하기: $('#commentTextarea').val('new value')은 ID가 commentTextarea인 요소의 값을 'new value'로 설정합니다.*/
+	
+	let comment1 = $(this).closest('td').find('textarea').val(); // comment1을 위치로 불러오는법 (여기선 해당 ajax를 쓰는 textarea가 두개이므로 위치로 불러오는법 사용)
+	// let comment1 = $('#commentTextarea2').val(); // comment1을 ID로 불러오는법 
+	let b_id = ${board.bId};
+	let username = '${username }'; //(문자열은 작은따옴표로 감싸야 함)
+	
+	$.ajax({ // 페이지를 새로 고치지 않고도 데이터를 동적으로 로드하거나 전송
+        url: "/reply", // click할 경우 url로 요청(호출) // 서버는 템플릿 파일을 로드하여 해당 내용을 응답으로 전송할 것입니다.
+        type: "POST",
+        data: { // 서버에 보낼 데이터는 data에 포함
+            comment2: comment1, // 저장된 내용(comment1 변수를 comment2라는 이름으로 보냄)
+            r_writer: username,
+            b_id: b_id
+            
+        },
+        success: function(res){ // 요청이 성공(success)할 경우 아래 함수 실행 // 요청으로 부터 받은 응답 데이터가 res에 저장
+            $('#commentList').html(res); // 요청이 성공하면 응답으로 받은 데이터를 #commentList라는 HTML 요소 내에 넣습니다.
+            // 즉, #commentList라는 ID를 가진 태그 내부는 res라는 html로 교체된다
+        },
+        error: function(){
+            $("#data").text("An error occurred");
+        }
+    });
 });
+
+$(document).on('click', '.btnComment', function(e) { /// 원글의 '댓글달기' 누를 시 여기로
+	e.preventDefault();
+	$(this).closest('tr').next('tr').css('display', ''); // 태그 찾는법 : 이 코드는 선택한 요소를 기준으로 가장 가까운 <form> 요소를 찾고, 그 다음에 나오는 <table> 요소를 선택한 후, 그 안에 있는 모든 <tr> 요소를 선택하여 스타일을 변경합니다.
+});
+
+$(document).on('click', '.btnComment2', function () { /// 대댓글 '등록'버튼 누를 시 여기로 (대댓글)
+	
+	let comment1 = $(this).closest('td').find('textarea').val(); 
+	let b_id = ${board.bId};
+	let username = '${username }';
+	let p_rp = $(this).attr('p_rp');
+	let r_grpord = $(this).attr('r_grpord');
+	let r_depth = $(this).attr('r_depth');
+	
+	$.ajax({
+        url: "/reply",
+        type: "POST",
+        data: {
+            comment2: comment1,
+            r_writer: username,
+            b_id: b_id,
+            r_depth: r_depth,
+            p_rp: p_rp,
+            r_grpord: r_grpord
+            
+        },
+        success: function(res){
+            $('#commentList').html(res);
+            
+        },
+        error: function(){
+            $("#data").text("An error occurred");
+        }
+    });
+});
+
 </script>
 
 </body>

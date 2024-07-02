@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Reply;
 import com.example.demo.mapper.BoardMapper;
 
 
@@ -61,6 +62,26 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void updateGrpord(Board board) {
 		boardmapper.updateGrpord(board);
+	}
+	
+	@Override
+	public List<Reply> selectReplyList(int bid) {
+		return boardmapper.selectReplyList(bid);
+	}
+	
+	@Override
+	public void insertReply(Reply reply) {
+		boardmapper.insertReply(reply);
+	}
+	
+	@Override
+	public void updateReply(Reply reply) {
+		boardmapper.updateReply(reply);
+	}
+	
+	@Override
+	public void updateReplyGrpord(Reply reply) {
+		boardmapper.updateReplyGrpord(reply);
 	}
 
 }

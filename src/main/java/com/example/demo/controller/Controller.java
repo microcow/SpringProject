@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Board;
+import com.example.demo.domain.Reply;
 import com.example.demo.domain.User;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.UserService;
@@ -186,7 +187,9 @@ public class Controller {
 	public String boarddetail(@RequestParam("bId") int bId, Model model) {
 		// get방식으로 bId값을 받고 있음
 		Board board = boardservice.selectBoard(bId);
+		List<Reply> replyList = boardservice.selectReplyList(bId);
 		model.addAttribute("board", board);
+		model.addAttribute("replyList", replyList);
 		
 		return "/boarddetail";
 	}
@@ -235,6 +238,44 @@ public class Controller {
 		}
 		else return "/wrongapproach";
 		
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/reply")
+	public String reply(@RequestParam("b_id") int bId,
+				   			  @RequestParam("comment2") String r_content,
+				   			  @RequestParam("r_writer") String r_writer,
+				   			  @RequestParam(value = "p_rp", required = false) Integer p_rp,
+							  @RequestParam(value = "r_depth", required = false) Integer r_depth,
+							  @RequestParam(value = "r_grpord", required = false) Integer r_grpord,
+							  Model model) {
+		
+		Reply reply = new Reply();
+		reply.setB_id(bId);
+		reply.setR_content(r_content);
+		reply.setR_writer(r_writer);
+		boardservice.insertReply(reply); //글 저장(원 댓글이든 대댓글이든 상관없이)
+		
+		if (p_rp != null) { // 대댓글일 경우 p_rp, r_depth, r_grpord 값 세팅
+			reply.setP_rp(p_rp);
+			reply.setR_depth(r_depth + 1);
+			reply.setR_grpord(r_grpord); // 부모 댓글 grpord로 셋팅
+			boardservice.updateReplyGrpord(reply); // grpord 업데이트 메서드 실행 (부모 grpord보다 높으면 +1) 
+			reply.setR_grpord(r_grpord+1); // 나는 빈자리인 부모 grpord +1 값으로 세팅
+			boardservice.updateReply(reply);
+		}
+		else { // 원글일 경우 p_rp, r_depth, r_grpord 값 세팅
+			reply.setP_rp(reply.getR_id());
+			reply.setR_depth(1);
+			reply.setR_grpord(0);
+			boardservice.updateReply(reply);
+		}
+		
+		List<Reply> replyList = boardservice.selectReplyList(bId);
+		model.addAttribute("replyList", replyList);
+		
+
+		return "/ajax_reply";
 	}
 	
 }

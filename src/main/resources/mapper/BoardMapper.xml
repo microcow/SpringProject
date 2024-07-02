@@ -8,6 +8,7 @@
    	     INSERT INTO sb_board (b_title, b_content, b_writer)
    	      VALUES (#{bTitle}, #{bContent}, #{bWriter}) <!-- 변수의 getter를 호출함 -->
     </insert>
+    <!-- parameterType : 해당 XML문이 받는 타입-->
     
     <select id="selectBoardList" resultType="Board">
 	      SELECT         b_id as bId,
@@ -20,7 +21,7 @@
 				         
 	      FROM            sb_board
 	      ORDER BY		p_board desc, grpord asc, depth asc
-	<!-- resultType="Board"는 SQL 쿼리의 결과를 Board 객체로 매핑하겠다는 의미입니다. 
+	<!-- resultType : "Board"는 SQL 쿼리의 결과를 Board 객체로 매핑하겠다는 의미입니다. 
 	단, 이 쿼리는 여러 행을 return하고 있으므로 List<Board> 타입으로 return받아야 합니다.
 	즉, return값이 1개더라도 List<Board> 타입으로 반환됨. -->
 	   </select>
@@ -62,5 +63,42 @@
 	   		AND grpord > #{grpord}
 	   </update>
     
+    
+    
+    	<select id="selectReplyList" resultType="Reply">
+	   		SELECT 		r_id as r_id,
+	   					r_content as r_content,
+	   					r_writer as r_writer,
+	   					b_id as b_id,
+	   					r_depth as r_depth,
+	   					r_grpord as r_grpord,
+	   					p_rp as p_rp,
+	   					r_date as r_date
+	   					
+	   		FROM sb_reply
+	   		WHERE b_id = #{bid}
+	   		ORDER BY	p_rp desc, r_grpord asc, r_depth asc
+	   </select>
+	   
+	   
+	   <insert id="insertReply" parameterType="Reply" useGeneratedKeys="true" keyProperty="r_id"> <!-- keyProperty : bId값(primary key) 즉시 가져온 후 저장 -->
+   	     INSERT INTO sb_reply (b_id, r_content, r_writer)
+   	      VALUES (#{b_id}, #{r_content}, #{r_writer}) <!-- 변수의 getter를 호출함 -->
+ 	   </insert>
+ 	   
+ 	   
+ 	    <update id="updateReply" parameterType="Reply">
+	   		UPDATE sb_reply
+	   		SET p_rp = #{p_rp}, r_depth = #{r_depth}, r_grpord = #{r_grpord}
+	   		WHERE r_id = #{r_id}
+	   </update>
+	   
+	   <update id="updateReplyGrpord" parameterType="Reply">
+	   		UPDATE sb_reply
+	   		SET r_grpord = #{r_grpord} +1
+	   		WHERE r_id = #{r_id}
+	   		AND r_grpord > #{r_grpord}
+	   </update>
+ 	   
 </mapper>
 
