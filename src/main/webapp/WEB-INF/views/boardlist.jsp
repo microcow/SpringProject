@@ -8,7 +8,19 @@
 <title>게시글 목록</title>
 </head>
 <body>
-     <h1>게시글 목록</h1>
+<h1>게시글 목록</h1>
+<form action="/serchBoard" method="post">
+  <label for="lang">검색</label> <!-- label 키워드 -->
+  <select name="search" id="lang">
+  	<option value="select">search</option>
+    <option value="b_title">제목</option>
+    <option value="b_content">내용</option>
+    <option value="b_title AND b_content">제목 + 내용</option>
+    <option value="b_writer">작성자</option>
+  </select>
+  <input type="text" name="content" placeholder="검색어를 입력하세요.">
+  <input type="submit" value="Submit" />
+</form>
       <table>
       	<c:forEach var="list" items="${list }">
 	      	<tr>

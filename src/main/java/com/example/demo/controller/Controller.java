@@ -243,7 +243,7 @@ public class Controller {
 	@Secured({"ROLE_USER"})
 	@RequestMapping(value="/reply")
 	public String reply(@RequestParam("b_id") int bId,
-				   			  @RequestParam("comment2") String r_content,
+				   			  @RequestParam("r_content") String r_content,
 				   			  @RequestParam("r_writer") String r_writer,
 				   			  @RequestParam(value = "p_rp", required = false) Integer p_rp,
 							  @RequestParam(value = "r_depth", required = false) Integer r_depth,
@@ -275,6 +275,26 @@ public class Controller {
 		model.addAttribute("replyList", replyList);
 		
 
+		return "/ajax_reply";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/changeReply")
+	public String changeReply(Reply reply, Model model) {
+		boardservice.changeReply(reply);
+		List<Reply> replyList = boardservice.selectReplyList(reply.getB_id());
+		model.addAttribute(replyList);
+		
+		return "/ajax_reply";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/deleteReply")
+	public String deleteReply(Reply reply, Model model) {
+		boardservice.deleteReply(reply);
+		List<Reply> replyList = boardservice.selectReplyList(reply.getB_id());
+		model.addAttribute(replyList);
+		
 		return "/ajax_reply";
 	}
 	

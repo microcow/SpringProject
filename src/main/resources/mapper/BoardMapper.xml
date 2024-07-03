@@ -77,7 +77,7 @@
 	   					
 	   		FROM sb_reply
 	   		WHERE b_id = #{bid}
-	   		ORDER BY	p_rp desc, r_grpord asc, r_depth asc
+	   		ORDER BY	p_rp desc, r_grpord asc, r_depth asc, r_id desc
 	   </select>
 	   
 	   
@@ -99,6 +99,18 @@
 	   		WHERE r_id = #{r_id}
 	   		AND r_grpord > #{r_grpord}
 	   </update>
+	   
+	   <update id="changeReply" parameterType="Reply">
+	   		UPDATE sb_reply
+	   		SET r_content = #{r_content},
+	   			r_date = NOW()
+	   		WHERE r_id = #{r_id}
+	   </update>
+	   
+	    <delete id="deleteReply" parameterType="Reply">
+	   	  DELETE FROM sb_reply
+	   	  WHERE r_id = #{r_id}
+	   </delete>
  	   
 </mapper>
 

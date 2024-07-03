@@ -44,4 +44,8 @@ public interface BoardMapper {
 	public void updateReply(Reply reply);
 	
 	public void updateReplyGrpord(Reply reply);
+	
+	public void changeReply(Reply reply);
+	
+	public void deleteReply(Reply reply);
 }

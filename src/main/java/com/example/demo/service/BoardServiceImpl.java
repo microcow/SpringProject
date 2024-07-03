@@ -83,5 +83,15 @@ public class BoardServiceImpl implements BoardService {
 	public void updateReplyGrpord(Reply reply) {
 		boardmapper.updateReplyGrpord(reply);
 	}
+	
+	@Override
+	public void changeReply(Reply reply) {
+		boardmapper.changeReply(reply);
+	}
+	
+	@Override
+	public void deleteReply(Reply reply) {
+		boardmapper.deleteReply(reply);
+	}
 
 }
