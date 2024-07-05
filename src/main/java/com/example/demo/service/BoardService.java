@@ -3,6 +3,7 @@ package com.example.demo.service;
 import java.util.List;
 import com.example.demo.domain.Board;
 import com.example.demo.domain.Reply;
+import com.example.demo.domain.Search;
 
 
 public interface BoardService {
@@ -36,4 +37,6 @@ public interface BoardService {
 	public void changeReply(Reply reply);
 	
 	public void deleteReply(Reply reply);
+	
+	public List<Board> searchBoard(Search search);
 }

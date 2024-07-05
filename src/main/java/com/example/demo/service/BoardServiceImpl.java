@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.domain.Board;
 import com.example.demo.domain.Reply;
+import com.example.demo.domain.Search;
 import com.example.demo.mapper.BoardMapper;
 
 
@@ -92,6 +93,11 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteReply(Reply reply) {
 		boardmapper.deleteReply(reply);
+	}
+	
+	@Override
+	public List<Board> searchBoard(Search search) {
+		return boardmapper.searchBoard(search);
 	}
 
 }

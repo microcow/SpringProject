@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Select;
 
 import com.example.demo.domain.Board;
 import com.example.demo.domain.Reply;
+import com.example.demo.domain.Search;
 
 @Mapper
 public interface BoardMapper {
@@ -48,4 +49,6 @@ public interface BoardMapper {
 	public void changeReply(Reply reply);
 	
 	public void deleteReply(Reply reply);
+	
+	public List<Board> searchBoard(Search search);
 }

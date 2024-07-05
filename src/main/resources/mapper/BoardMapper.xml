@@ -22,8 +22,8 @@
 	      FROM            sb_board
 	      ORDER BY		p_board desc, grpord asc, depth asc
 	<!-- resultType : "Board"는 SQL 쿼리의 결과를 Board 객체로 매핑하겠다는 의미입니다. 
-	단, 이 쿼리는 여러 행을 return하고 있으므로 List<Board> 타입으로 return받아야 합니다.
-	즉, return값이 1개더라도 List<Board> 타입으로 반환됨. -->
+	단, 이 쿼리는 여러 행을 return하고 있으므로 List<Board> 타입으로 return받아야 합니다. -->
+	 
 	   </select>
 	   
 	    <select id="selectBoard" resultType="Board">
@@ -112,5 +112,33 @@
 	   	  WHERE r_id = #{r_id}
 	   </delete>
  	   
+ 	   
+ 	   <select id="searchBoard" resultType="Board">
+	   	  SELECT 		b_id as bId,
+				         b_title as bTitle,
+				         b_content as bContent,
+				         b_writer as bWriter,
+				         p_board as p_board,
+				         depth as depth,
+				         grpord as grpord
+				         
+	      FROM           sb_board
+	      WHERE 
+						(
+						    #{search} = 'b_title' AND b_title LIKE CONCAT('%', #{content}, '%')
+						)
+						OR
+						(
+						    #{search} = 'b_content' AND b_content LIKE CONCAT('%', #{content}, '%')
+						)
+						OR
+						(
+						    #{search} = 'b_title AND b_content' AND (b_title LIKE CONCAT('%', #{content}, '%') || b_content LIKE CONCAT('%', #{content}, '%'))
+						)
+						OR
+						(
+						    #{search} = 'b_writer' AND b_writer LIKE CONCAT('%', #{content}, '%')
+						)
+	   </select>
 </mapper>
 

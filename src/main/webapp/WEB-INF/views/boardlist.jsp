@@ -9,7 +9,7 @@
 </head>
 <body>
 <h1>게시글 목록</h1>
-<form action="/serchBoard" method="post">
+<form action="/searchBoard" method="post">
   <label for="lang">검색</label> <!-- label 키워드 -->
   <select name="search" id="lang">
   	<option value="select">search</option>

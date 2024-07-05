@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.domain.Board;
 import com.example.demo.domain.Reply;
+import com.example.demo.domain.Search;
 import com.example.demo.domain.User;
 import com.example.demo.service.BoardService;
 import com.example.demo.service.UserService;
@@ -296,6 +297,18 @@ public class Controller {
 		model.addAttribute(replyList);
 		
 		return "/ajax_reply";
+	}
+	
+	@Secured({"ROLE_USER"})
+	@RequestMapping(value="/searchBoard")
+	public String searchBoard(Search search, Model model) {
+		System.out.println(search.getContent());
+		System.out.println(search.getSearch());
+		List<Board> searchResult = boardservice.searchBoard(search);
+		
+		model.addAttribute("list", searchResult); //이미 사용되고있던 jsp로 전달하기에 전달하는 변수이름을 상단의 boardList 메서드와 동일하게 list로 통일
+		
+		return "/boardlist";
 	}
 	
 }
