@@ -9,7 +9,7 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js">
 // jQuary 라이브러리 추가 코드
-// 추가하지 않을 경우 Ajax나 script 사용에 문제가 발생할 수 있음
+// 추가하지 않을 경우 Ajax나 script, jquery 사용에 문제가 발생할 수 있음
 </script>
 
 </head>

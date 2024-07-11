@@ -35,6 +35,7 @@
            
             
         </div>
+        
         <div>
          <sec:authorize access="isAuthenticated()">
          <sec:authentication property="principal.username" var="username"/> 
