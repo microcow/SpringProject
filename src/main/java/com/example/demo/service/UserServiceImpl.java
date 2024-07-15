@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
    /* 매퍼 파일에서(UserMapper.xml) namespace를 해당 클래스로 지정하였기에(구현하고있기에) 
    userMapper로 호출할 경우 UserMapper.xml로 매핑된다. */ 
 	
-   @Override
+   @Override // UserDetailsService 인터페이스는 단 하나의 메서드인 loadUserByUsername을 정의하고 있습니다.
    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
       User user = userMapper.readUser(username);
       user.setAuthorities(getAuthorities(username));

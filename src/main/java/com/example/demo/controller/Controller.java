@@ -113,7 +113,7 @@ public class Controller {
 	@Secured({"ROLE_USER"})
 	@RequestMapping(value="/createboard")
 	public String createBoard(@RequestParam(value = "bId", required = false) Integer bId, Model model) {
-								//required = false : bId의 값이 있을때만 파라미터로 받음
+								//★ required = false : bId의 값이 있을때만 파라미터로 받음
 		
 		if (bId != null) { //답글일 경우 원글 전달(bId가 Integer타입이므로 != 0이 아닌 != null)
 			Board momBoard = boardservice.selectBoard((int)bId);

@@ -81,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
       JdbcTokenRepositoryImpl db = new JdbcTokenRepositoryImpl();
       db.setDataSource(dataSource);
       return db;
+      // JDBC 기반의 PersistentTokenRepository를 구성하여 Remember Me 기능에서 사용
    }
    //security 기본설정
    @Override
