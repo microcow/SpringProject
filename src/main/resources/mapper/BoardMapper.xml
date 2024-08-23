@@ -10,7 +10,7 @@
     </insert>
     <!-- parameterType : 해당 XML문이 받는 타입-->
     
-    <select id="selectBoardList" resultType="Board">
+    <select id="selectBoardList" resultType="Board"> <!--  -->
 	      SELECT         b_id as bId,
 				         b_title as bTitle,
 				         b_content as bContent,
