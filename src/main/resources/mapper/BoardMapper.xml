@@ -10,7 +10,7 @@
     </insert>
     <!-- parameterType : 해당 XML문이 받는 타입-->
     
-    <select id="selectBoardList" resultType="Board"> <!--  -->
+    <select id="selectBoardList" resultType="Board">
 	      SELECT         b_id as bId,
 				         b_title as bTitle,
 				         b_content as bContent,
@@ -81,7 +81,7 @@
 	   </select>
 	   
 	   
-	   <insert id="insertReply" parameterType="Reply" useGeneratedKeys="true" keyProperty="r_id"> <!-- keyProperty : bId값(primary key) 즉시 가져온 후 저장 -->
+	   <insert id="insertReply" parameterType="Reply" useGeneratedKeys="true" keyProperty="r_id"> <!-- keyProperty : rId값(primary key, 자동 생성키) 즉시 가져온 후 저장 -->
    	     INSERT INTO sb_reply (b_id, r_content, r_writer)
    	      VALUES (#{b_id}, #{r_content}, #{r_writer}) <!-- 변수의 getter를 호출함 -->
  	   </insert>
